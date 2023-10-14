@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <servlet>
+        <servlet-name>HorarioDeTrabalhoServlet</servlet-name>
+        <servlet-class>HorarioDeTrabalhoServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>HorarioDeTrabalhoServlet</servlet-name>
+        <url-pattern>/addHorario</url-pattern>
+    </servlet-mapping>
+
+    <!-- Adicionando mapeamento para CalculoServlets -->
+    <servlet-mapping>
+        <servlet-name>CalculoServlets</servlet-name>
+        <url-pattern>/CalculoServlets</url-pattern> <!-- Mantenha apenas este padrão de URL -->
+    </servlet-mapping>
+
+</web-app>

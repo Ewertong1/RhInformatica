@@ -1,0 +1,82 @@
+$(document).ready(function() {
+    function isValidTimeRange(entrada, saida) {
+        let [eh, em] = entrada.split(":").map(Number);
+        let [sh, sm] = saida.split(":").map(Number);
+
+        if (eh > sh) return false;
+        if (eh === sh && em >= sm) return false;
+
+        return true;
+    }
+
+    $('#addHorarioBtn').click(function() {
+        let entrada = $('#entradaHorario').val();
+        let saida = $('#saidaHorario').val();
+
+        if (!isValidTimeRange(entrada, saida)) {
+            alert("Por favor, insira um intervalo de tempo válido.");
+            return;
+        }
+
+        if ($('#horarioTbody tr').length >= 3) {
+            alert("Você só pode adicionar até 3 horários de trabalho.");
+            return;
+        }
+
+        $('#horarioTbody').append('<tr><td>' + entrada + '</td><td>' + saida + '</td></tr>');
+        $('#entradaHorario').val('');
+        $('#saidaHorario').val('');
+    });
+
+    $('#addMarcacaoBtn').click(function() {
+        let entrada = $('#entradaMarcacao').val();
+        let saida = $('#saidaMarcacao').val();
+
+        if (!isValidTimeRange(entrada, saida)) {
+            alert("Por favor, insira um intervalo de tempo válido.");
+            return;
+        }
+
+        $('#marcacaoTbody').append('<tr><td>' + entrada + '</td><td>' + saida + '</td></tr>');
+        $('#entradaMarcacao').val('');
+        $('#saidaMarcacao').val('');
+    });
+
+    function calcularResultados() {
+        let horarios = [];
+        let marcacoes = [];
+
+        // Coletar todos os horários e marcações 
+        $('#horarioTbody tr').each(function() {
+            let entrada = $(this).find('td:eq(0)').text();
+            let saida = $(this).find('td:eq(1)').text();
+            horarios.push({entrada: entrada, saida: saida});
+        });
+
+        $('#marcacaoTbody tr').each(function() {
+            let entrada = $(this).find('td:eq(0)').text();
+            let saida = $(this).find('td:eq(1)').text();
+            marcacoes.push({entrada: entrada, saida: saida});
+        });
+
+        $.ajax({
+            url: '/CalculoServlet',
+            type: 'POST',
+            data: {
+                horarios: JSON.stringify(horarios),
+                marcacoes: JSON.stringify(marcacoes)
+            },
+            success: function(data) {
+                // Atualiza a interface do usuário com os dados recebidos
+            },
+            error: function(error) {
+                console.error("Erro ao obter os resultados:", error);
+            }
+        });
+    }
+
+    $("#calcularBtn").click(function() {
+        calcularResultados();
+    });
+});
+

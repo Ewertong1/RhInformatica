@@ -1,0 +1,100 @@
+$(document).ready(function() {
+    // ... (código anterior)
+
+    $('#calcularBtn').click(function() {
+        // Fazer chamada AJAX para calcular atrasos e horas extras
+        $.post("/calcular", {}, function(data) {
+            // Atualizar as tabelas com os resultados
+            updateTable('#atrasosTbody', data.atrasos);
+            updateTable('#horasExtrasTbody', data.horasExtras);
+        }, "json");
+    });
+
+    function updateTable(selector, data) {
+        $(selector).empty();
+        for (let i = 0; i < data.length; i++) {
+            $(selector).append('<tr><td>' + data[i][0] + '</td><td>' + data[i][1] + '</td></tr>');
+        }
+    }
+});
+//... (código anterior)
+
+$('#addHorarioBtn').click(function() {
+    // ... (código anterior para adicionar horário)
+
+    // Limpar campos de entrada
+    $('#entradaHorario').val('');
+    $('#saidaHorario').val('');
+});
+
+$('#addMarcacaoBtn').click(function() {
+    // ... (código anterior para adicionar marcação)
+
+    // Limpar campos de entrada
+    $('#entradaMarcacao').val('');
+    $('#saidaMarcacao').val('');
+});
+
+
+//... (código anterior)
+
+function isValidTimeRange(entrada, saida) {
+    if (!entrada || !saida) return false;
+
+    let [eh, em] = entrada.split(":").map(Number);
+    let [sh, sm] = saida.split(":").map(Number);
+
+    if (eh > sh) return false;
+    if (eh === sh && em >= sm) return false;
+
+    return true;
+}
+
+
+$('#addHorarioBtn').click(function() {
+    let entrada = $('#entradaHorario').val();
+    let saida = $('#saidaHorario').val();
+
+    if (!isValidTimeRange(entrada, saida)) {
+        alert("Por favor, insira um intervalo de tempo válido.");
+        return;
+    }
+
+    // ... (restante do código)
+});
+
+$('#addMarcacaoBtn').click(function() {
+    let entrada = $('#entradaMarcacao').val();
+    let saida = $('#saidaMarcacao').val();
+
+    if (!isValidTimeRange(entrada, saida)) {
+        alert("Por favor, insira um intervalo de tempo válido.");
+        return;
+    }
+
+    // ... (restante do código)
+});
+
+//... (código anterior)
+
+$('#addHorarioBtn').click(function() {
+    // ... (código anterior)
+
+    alert("Horário de trabalho adicionado com sucesso!");
+});
+
+$('#addMarcacaoBtn').click(function() {
+    // ... (código anterior)
+
+    alert("Marcação adicionada com sucesso!");
+});
+
+$('#calcularBtn').click(function() {
+    // ... (código anterior)
+
+    alert("Atrasos e horas extras calculados com sucesso!");
+});
+
+
+
+

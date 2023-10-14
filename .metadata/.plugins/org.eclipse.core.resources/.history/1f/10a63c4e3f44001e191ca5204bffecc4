@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle de Horários</title>
+<!-- Bootstrap CSS -->
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+	<div class="container mt-5">
+		<h2>Horário de Trabalho</h2>
+		 <form id="horarioForm" method="get" action="http://localhost:8181/teste/CalculoServlet">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="number" id="entradaHorario" name="entradaHorario" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <input type="time" id="saidaHorario" name="saidaHorario" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <button type="time" id="addHorarioBtn" class="btn btn-primary">Adicionar Horário</button>
+            </div>
+        </div>
+    </form>
+
+		<table class="table table-bordered table-striped mt-3">
+			<thead>
+				<tr>
+					<th>Entrada</th>
+					<th>Saída</th>
+				</tr>
+			</thead>
+			<tbody id="horarioTbody"></tbody>
+		</table>
+
+		<h2 class="mt-5">Marcações Feitas</h2>
+		<div class="row">
+			<div class="col-md-4">
+				<input type="time" id="entradaMarcacao" class="form-control">
+			</div>
+			<div class="col-md-4">
+				<input type="time" id="saidaMarcacao" class="form-control">
+			</div>
+			<div class="col-md-4">
+				<button id="addMarcacaoBtn" class="btn btn-primary">Adicionar
+					Marcação</button>
+			</div>
+		</div>
+
+		<table class="table table-bordered table-striped mt-3">
+			<thead>
+				<tr>
+					<th>Entrada</th>
+					<th>Saída</th>
+				</tr>
+			</thead>
+			<tbody id="marcacaoTbody"></tbody>
+		</table>
+
+		<button id="calcularBtn" class="btn btn-success mt-3">Calcular
+			Atrasos e Horas Extras</button>
+
+		<h2 class="mt-5">Atrasos</h2>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Entrada</th>
+					<th>Saída</th>
+				</tr>
+			</thead>
+			<tbody id="atrasoTbody"></tbody>
+		</table>
+
+		<h2 class="mt-5">Horas Extras</h2>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Entrada</th>
+					<th>Saída</th>
+				</tr>
+			</thead>
+			<tbody id="extraTbody"></tbody>
+		</table>
+	</div>
+
+	<!-- Scripts -->
+	<script src="main.js"></script>
+</body>
+</html>

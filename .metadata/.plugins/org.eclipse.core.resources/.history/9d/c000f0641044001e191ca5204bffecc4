@@ -1,0 +1,25 @@
+package HorarioDeTrabalho;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MarcacoesFeitasServlet extends HttpServlet {
+    // Lista para armazenar as marcações
+    private static List<String[]> marcacoes = new ArrayList<>();
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String entrada = req.getParameter("entrada");
+        String saida = req.getParameter("saida");
+
+        // Adiciona a marcação à lista
+        marcacoes.add(new String[]{entrada, saida});
+
+        // Retorna uma resposta de sucesso
+        resp.setContentType("application/json");
+        resp.getWriter().write("{\"status\":\"success\"}");
+    }
+}

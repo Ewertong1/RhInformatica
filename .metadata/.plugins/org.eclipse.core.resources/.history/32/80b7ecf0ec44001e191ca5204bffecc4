@@ -1,0 +1,33 @@
+package CalculadorHora;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
+@WebServlet("/calculation")
+public class TimeCalculatorServlet extends HttpServlet {
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] workHours = req.getParameterValues("workHours");
+        String[] markedHours = req.getParameterValues("markedHours");
+
+        // Parse the times and perform calculations
+        //List<String> atrasos = calculateDelays(workHours, markedHours);
+       // List<String> extras = calculateExtras(workHours, markedHours);
+        
+        //req.setAttribute("atrasos", atrasos);
+      //  req.setAttribute("extras", extras);
+        
+        // Forward to JSP for display
+        req.getRequestDispatcher("/results.jsp").forward(req, resp);
+    }
+
+    // Add your time calculation functions here (e.g., calculateDelays and calculateExtras)
+}

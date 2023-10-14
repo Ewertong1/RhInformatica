@@ -1,0 +1,152 @@
+$(document).ready(function() {
+    $('#addHorarioBtn').click(function() {
+        let entrada = $('#entradaHorario').val();
+        let saida = $('#saidaHorario').val();
+
+        if (!isValidTimeRange(entrada, saida)) {
+            alert("Por favor, insira um intervalo de tempo válido.");
+            return;
+        }
+
+        if ($('#horarioTbody tr').length >= 3) {
+            alert("Você só pode adicionar até 3 horários de trabalho.");
+            return;
+        }
+
+        $('#horarioTbody').append('<tr><td>' + entrada + '</td><td>' + saida + '</td></tr>');
+        $('#entradaHorario').val('');
+        $('#saidaHorario').val('');
+    });
+
+    $('#addMarcacaoBtn').click(function() {
+        let entrada = $('#entradaMarcacao').val();
+        let saida = $('#saidaMarcacao').val();
+
+        if (!isValidTimeRange(entrada, saida)) {
+            alert("Por favor, insira um intervalo de tempo válido.");
+            return;
+        }
+
+        $('#marcacaoTbody').append('<tr><td>' + entrada + '</td><td>' + saida + '</td></tr>');
+        $('#entradaMarcacao').val('');
+        $('#saidaMarcacao').val('');
+    });
+
+
+    function isValidTimeRange(entrada, saida) {
+      // if (!entrada || !saida) return false;
+
+        let [eh, em] = entrada.split(":").map(Number);
+        let [sh, sm] = saida.split(":").map(Number);
+
+        if (eh > sh) return false;
+        if (eh === sh && em >= sm) return false;
+
+        return true;
+    }
+    $('#addHorarioBtn').click(function() {
+        let entrada = $('#entradaHorario').val();
+        let saida = $('#saidaHorario').val();
+
+        if (!isValidTimeRange(entrada, saida)) {
+            alert("Por favor, insira um intervalo de tempo válido.");
+            return;
+        }
+
+        if ($('#horarioTbody tr').length >= 3) {
+            alert("Você só pode adicionar até 3 horários de trabalho.");
+            return;
+        }
+
+        // Enviar dados para o servlet
+        $.post("/HorarioDeTrabalhoServlet", { entrada: entrada, saida: saida }, function(response) {
+            if (response.success) {
+                $('#horarioTbody').append('<tr><td>' + entrada + '</td><td>' + saida + '</td></tr>');
+                $('#entradaHorario').val('');
+                $('#saidaHorario').val('');
+            } else {
+                alert(response.message);
+            }
+        });
+    });
+
+    $('#addMarcacaoBtn').click(function() {
+        let entrada = $('#entradaMarcacao').val();
+        let saida = $('#saidaMarcacao').val();
+
+        if (!isValidTimeRange(entrada, saida)) {
+            alert("Por favor, insira um intervalo de tempo válido.");
+            return;
+        }
+
+        // Enviar dados para o servlet
+        $.post("/MarcacoesFeitasServlet", { entrada: entrada, saida: saida }, function(response) {
+            if (response.success) {
+                $('#marcacaoTbody').append('<tr><td>' + entrada + '</td><td>' + saida + '</td></tr>');
+                $('#entradaMarcacao').val('');
+                $('#saidaMarcacao').val('');
+            } else {
+                alert(response.message);
+            }
+        });
+    });
+
+    $('#calcularBtn').click(function() {
+        $.get("/teste/CalculoServlet", function(response) {
+            // Atualizar tabela de atrasos
+            $('#atrasoTbody').empty();
+            response.atrasos.forEach(function(interval) {
+                $('#atrasoTbody').append('<tr><td>' + interval[0] + '</td><td>' + interval[1] + '</td></tr>');
+            });
+
+            // Atualizar tabela de horas extras
+            $('#extraTbody').empty();
+            response.horasExtras.forEach(function(interval) {
+                $('#extraTbody').append('<tr><td>' + interval[0] + '</td><td>' + interval[1] + '</td></tr>');
+            });
+        });
+    });
+    function calcularResultados() {
+        let horarios = [];
+        let marcacoes = [];
+
+        // Coletar todos os horários e marcações 
+        let entradaHorario = $("input[name='entradaHorario']").val();
+        let saidaHorario = $("input[name='saidaHorario']").val();
+        let entradaMarcacao = $("input[name='entradaMarcacao']").val();
+        let saidaMarcacao = $("input[name='saidaMarcacao']").val();
+
+        horarios.push({entrada: entradaHorario, saida: saidaHorario});
+        marcacoes.push({entrada: entradaMarcacao, saida: saidaMarcacao});
+
+        $.ajax({
+            url: '/CalculoServlet',
+            type: 'POST',
+            data: {
+                horarios: JSON.stringify(horarios),
+                marcacoes: JSON.stringify(marcacoes)
+            },
+            success: function(data) {
+                // Atualiza a interface do usuário com os dados recebidos
+            },
+            error: function(error) {
+                console.error("Erro ao obter os resultados:", error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $("#addHorarioBtn").click(function() {
+            // Lógica para adicionar horário
+        });
+
+        $("#addMarcacaoBtn").click(function() {
+            // Lógica para adicionar marcação
+        });
+
+        $("#calcularBtn").click(function() {
+            calcularResultados();
+        });
+    });
+
+});
